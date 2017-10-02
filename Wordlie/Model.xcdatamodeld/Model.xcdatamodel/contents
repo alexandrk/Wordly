@@ -2,12 +2,16 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Definition" representedClassName="Definition" syncable="YES" codeGenerationType="class">
         <attribute name="definition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orderNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="partOfSpeech" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="synonyms" optional="YES" attributeType="Transformable" customClassName="[NSString]" syncable="YES"/>
+        <attribute name="valuePoints" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="examples" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Example" inverseName="definition" inverseEntity="Example" syncable="YES"/>
         <relationship name="word" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Word" inverseName="definitions" inverseEntity="Word" syncable="YES"/>
     </entity>
-    <entity name="Examples" representedClassName="Examples" syncable="YES" codeGenerationType="class">
-        <attribute name="example" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="words" maxCount="1" deletionRule="Nullify" destinationEntity="Word" inverseName="examples" inverseEntity="Word" syncable="YES"/>
+    <entity name="Example" representedClassName="Example" syncable="YES" codeGenerationType="class">
+        <attribute name="example" attributeType="String" syncable="YES"/>
+        <relationship name="definition" maxCount="1" deletionRule="Nullify" destinationEntity="Definition" inverseName="examples" inverseEntity="Definition" syncable="YES"/>
     </entity>
     <entity name="Vocabulary" representedClassName="Vocabulary" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -15,16 +19,15 @@
     </entity>
     <entity name="Word" representedClassName="Word" syncable="YES" codeGenerationType="class">
         <attribute name="frequency" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="synonyms" optional="YES" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="pronounciation" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="definitions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Definition" inverseName="word" inverseEntity="Definition" syncable="YES"/>
-        <relationship name="examples" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Examples" inverseName="words" inverseEntity="Examples" syncable="YES"/>
         <relationship name="vocabularies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Vocabulary" inverseName="words" inverseEntity="Vocabulary" syncable="YES"/>
     </entity>
     <elements>
         <element name="Vocabulary" positionX="-63" positionY="-18" width="128" height="75"/>
-        <element name="Word" positionX="-54" positionY="-9" width="128" height="135"/>
-        <element name="Definition" positionX="-36" positionY="9" width="128" height="90"/>
-        <element name="Examples" positionX="-27" positionY="36" width="128" height="75"/>
+        <element name="Word" positionX="-54" positionY="-9" width="128" height="120"/>
+        <element name="Definition" positionX="-36" positionY="9" width="128" height="150"/>
+        <element name="Example" positionX="-27" positionY="36" width="128" height="75"/>
     </elements>
 </model>

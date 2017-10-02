@@ -16,6 +16,7 @@
 		11E39E3B1F8086DC0001E3D2 /* OutOfSourceControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E3A1F8086DC0001E3D2 /* OutOfSourceControl.swift */; };
 		11E39E3E1F8175930001E3D2 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E3C1F8175930001E3D2 /* Model.xcdatamodeld */; };
 		11E39E401F8195C80001E3D2 /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E3F1F8195C80001E3D2 /* CoreData.swift */; };
+		11E39E421F81BEE10001E3D2 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E411F81BEE10001E3D2 /* Networking.swift */; };
 		12F0D9219D7738844FCAD740 /* Pods_Wordlie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8D2D70420CD787D4911FA6 /* Pods_Wordlie.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		11E39E3A1F8086DC0001E3D2 /* OutOfSourceControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfSourceControl.swift; sourceTree = "<group>"; };
 		11E39E3D1F8175930001E3D2 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		11E39E3F1F8195C80001E3D2 /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
+		11E39E411F81BEE10001E3D2 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		8A8D2D70420CD787D4911FA6 /* Pods_Wordlie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wordlie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D703B91B6AEDF53C153B6926 /* Pods-Wordlie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wordlie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Wordlie/Pods-Wordlie.debug.xcconfig"; sourceTree = "<group>"; };
 		D85C1DCFEFC84F2355FFB83F /* Pods-Wordlie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wordlie.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wordlie/Pods-Wordlie.release.xcconfig"; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				112DEADA1F6736AD0080CC29 /* ViewController.swift */,
 				11E39E3C1F8175930001E3D2 /* Model.xcdatamodeld */,
 				11E39E3F1F8195C80001E3D2 /* CoreData.swift */,
+				11E39E411F81BEE10001E3D2 /* Networking.swift */,
 				112DEADC1F6736AD0080CC29 /* Main.storyboard */,
 				112DEADF1F6736AD0080CC29 /* Assets.xcassets */,
 				112DEAE11F6736AD0080CC29 /* LaunchScreen.storyboard */,
@@ -236,6 +239,7 @@
 				11E39E3B1F8086DC0001E3D2 /* OutOfSourceControl.swift in Sources */,
 				11E39E401F8195C80001E3D2 /* CoreData.swift in Sources */,
 				11E39E391F8086750001E3D2 /* Constants.swift in Sources */,
+				11E39E421F81BEE10001E3D2 /* Networking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

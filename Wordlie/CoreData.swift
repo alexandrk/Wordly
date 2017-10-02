@@ -22,7 +22,7 @@ class CoreData: NSObject {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
          */
-        let container = NSPersistentContainer(name: Constants.CoreDataModel)
+        let container = NSPersistentContainer(name: Constants.CoreData.ModelName)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
@@ -58,7 +58,44 @@ class CoreData: NSObject {
         }
     }
     
+    // MARK: - Core Data Creating New Objects
+    static func createWordObj() -> Word {
+        return NSEntityDescription.insertNewObject(forEntityName: Constants.CoreData.Entities.Word, into: moc) as! Word
+    }
     
+    static func createVocabularyObj() -> Vocabulary {
+        return NSEntityDescription.insertNewObject(forEntityName: Constants.CoreData.Entities.Vocabulary, into: moc) as! Vocabulary
+    }
+    
+    static func createDefinitionObj() -> Definition {
+        return NSEntityDescription.insertNewObject(forEntityName: Constants.CoreData.Entities.Definition, into: moc) as! Definition
+    }
+    
+    static func createExampleObj() -> Example {
+        return NSEntityDescription.insertNewObject(forEntityName: Constants.CoreData.Entities.Example, into: moc) as! Example
+    }
+    
+    // MARK: - Queries
+    /**
+     Checks if the word in question is already in the CoreData
+     - Returns: an optional array of `Word` objects
+     */
+    static func checkIfWordExists(word: String) -> [Word]? {
+        var results: [Word]?
+        let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
+        
+        let predicate = NSPredicate(format: "name ==[c] %@", word)
+        
+        fetchRequest.predicate = predicate
+        
+        do {
+            results = try CoreData.moc.fetch(fetchRequest)
+        } catch {
+            print("Failed to perform fetch request: \(error.localizedDescription)")
+        }
+        
+        return results
+    }
     
 }
 
