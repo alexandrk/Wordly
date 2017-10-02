@@ -26,6 +26,7 @@ class ViewController: UIViewController {
         field.placeholder = "Enter the word in question"
         field.font = UIFont(name: "PingFangHK-Semibold", size: 20)
         field.textAlignment = .center
+        field.clearButtonMode = .whileEditing
         field.autocapitalizationType = .allCharacters
         field.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
         field.layer.cornerRadius = 10
@@ -91,16 +92,54 @@ class ViewController: UIViewController {
     var searchButtonYConstraint: NSLayoutConstraint?
     var constraintsAnimationHappened: Bool = false
     
-    // MARK: - Button Click Event Handlers
-    func searchButtonClick() {
+    // MARK: - View Controller Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        // Subscribe to keyboard events (keyboardWill[Show|Hide]), used to shift view
+        // to display the bottom text field, while entering text into it
+        subscribeToKeyboardNotifications()
+        
+        // Set textfield delegate
+        wordField.delegate = self
+        
+        view.addSubview(backgroundImageView)
+        backgroundImageView.addSubview(wordField)
+        backgroundImageView.addSubview(searchButton)
+        backgroundImageView.addSubview(infoLabel)
+        backgroundImageView.addSubview(activityIndicator)
+        backgroundImageView.addSubview(textView)
+        backgroundImageView.addSubview(saveButton)
+        
+        setupLayout()
+        
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String
+        print(paths)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool){
+        super.viewWillDisappear(animated)
+        
+        // Unsubscribe from keyboard events
+        unsubscribeFromKeyboardNotifications()
+    }
+    
+    // MARK: - Button Click Event Handlers
+    
+    func searchButtonClick() {
         var wordMO: Word?
         
+        if wordField.isFirstResponder {
+            wordField.resignFirstResponder()
+        }
+        
         // Return if the wordField is empty
-        guard let word = wordField.text, word.characters.count > 0 else {
-            infoLabel.text = "Please enter a word you want the definion for into the text field above"
+        guard let word = wordField.text?.trimmingCharacters(in: .whitespacesAndNewlines), word.characters.count > 0 else {
+            infoLabel.text = Constants.App.EmptyWordFieldErrorMessage
             return
         }
+        wordField.text = word // Assigns trimmed value back to the field
         
         // Clear out the info label
         infoLabel.text = ""
@@ -140,6 +179,13 @@ class ViewController: UIViewController {
         }
     }
     
+    func saveButtonClick() {
+        print("Save button clicked")
+        // Add word to Vocabulary
+    }
+    
+    
+    // MARK: - Helper Functions
     func prepareToDisplay(_ wordMO: Word) {
         self.textView.isHidden = false
         self.saveButton.isHidden = false
@@ -215,11 +261,6 @@ class ViewController: UIViewController {
         self.textView.attributedText = finalOutput
     }
     
-    func saveButtonClick() {
-        print("Save button clicked")
-        // Add word to Vocabulary
-    }
-    
     func animateConstraints() {
         
         if constraintsAnimationHappened {
@@ -245,23 +286,7 @@ class ViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.addSubview(backgroundImageView)
-        backgroundImageView.addSubview(wordField)
-        backgroundImageView.addSubview(searchButton)
-        backgroundImageView.addSubview(infoLabel)
-        backgroundImageView.addSubview(activityIndicator)
-        backgroundImageView.addSubview(textView)
-        backgroundImageView.addSubview(saveButton)
-        
-        setupLayout()
-        
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String
-        print(paths)
-    }
-
+    // MARK: - Lauout
     func setupLayout() {
         
         // Background Image View
@@ -271,23 +296,23 @@ class ViewController: UIViewController {
         backgroundImageView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         
         // Text Field
-        wordField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -10).isActive = true
+        wordField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -Constants.App.Spacing.Small).isActive = true
         wordFieldYConstraint = wordField.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         wordFieldYConstraint?.isActive = true
-        wordFieldWidthConstraint = wordField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 10)
+        wordFieldWidthConstraint = wordField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: Constants.App.Spacing.Small)
         wordFieldWidthConstraint?.isActive = true
         wordField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         // Search Button
-        searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 10).isActive = true
-        searchButtonYConstraint = searchButton.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: 30)
+        searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.App.Spacing.Small).isActive = true
+        searchButtonYConstraint = searchButton.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: Constants.App.Spacing.Medium)
         searchButtonYConstraint?.isActive = true
         searchButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/3).isActive = true
         searchButton.heightAnchor.constraint(equalTo: wordField.heightAnchor).isActive = true
         
         // Info Label
         infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        infoLabel.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 30).isActive = true
+        infoLabel.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: Constants.App.Spacing.Medium).isActive = true
         infoLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100).isActive = true
         infoLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
@@ -299,15 +324,15 @@ class ViewController: UIViewController {
         
         // Results Text View
         textView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textView.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: 30).isActive = true
-        textView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20).isActive = true
-        textView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -30).isActive = true
+        textView.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: Constants.App.Spacing.Medium).isActive = true
+        textView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -Constants.App.Spacing.Medium).isActive = true
+        textView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -Constants.App.Spacing.Medium).isActive = true
         
         // Save Button
-        saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 15).isActive = true
+        saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.App.Spacing.Small).isActive = true
         saveButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/3).isActive = true
         saveButton.heightAnchor.constraint(equalTo: wordField.heightAnchor).isActive = true
-        saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
+        saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.App.Spacing.Medium).isActive = true
         
     }
     

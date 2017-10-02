@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "ViewController.keyboardWillShow(notification:):ViewControllerExtension.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UIScreen.main.bounds.height - textFieldBottomY">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ViewController.searchButtonClick():ViewController.swift">
          <PersistentStrings>
             <PersistentString

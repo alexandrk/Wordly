@@ -13,8 +13,14 @@ struct Constants {
     static let MashapeKeyKey = "x-mashape-key"
     
     struct App {
+        static let EmptyWordFieldErrorMessage = "Please enter a word you want the definion for into the text field above."
         static let LargeFont = UIFont(name: "PingFangHK-Semibold", size: 18.0)!
         static let SmallFont = UIFont(name: "PingFangHK-Regular", size: 16)!
+        
+        struct Spacing {
+            static let Small: CGFloat = 10
+            static let Medium: CGFloat = 30
+        }
     }
     
     struct Response {
