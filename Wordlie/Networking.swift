@@ -2,6 +2,8 @@
 //  Networking.swift
 //  Wordlie
 //
+//  API Related Methods
+//
 //  Created by Alexander on 10/1/17.
 //  Copyright © 2017 Dictality. All rights reserved.
 //
@@ -20,9 +22,15 @@ enum NetworkingErrors: Error {
 
 class Networking: NSObject {
 
+    /**
+     Sends an API request and prepares the response for the completion handler
+     - Parameter word: Word to search for the definition
+     - Parameter completion: Completion handler for when the response comes back
+     */
     static func sendWordDefinitionAPIRequest(word:String, completion: @escaping (WordAPIResult) -> Void) {
         let requestURL:String = "\(Constants.WordsAPIEndPoint)\(word)"
         
+        // API Call
         Alamofire
             .request(requestURL, headers: [Constants.MashapeKeyKey: OutOfSourceControl.WordsAPIMashapeKey])
             .validate(statusCode: 200..<300)
@@ -32,8 +40,8 @@ class Networking: NSObject {
                 if response.error != nil || response.result.error != nil {
                     completion(.failure((response.error == nil) ? response.error! : response.result.error!))
                 }
-                print(response.response?.allHeaderFields ?? "No Headers in the Response Object")
-
+                
+                // If success
                 if let json = response.result.value as? [String: AnyObject] {
                     completion(.success(json))
                 }
@@ -41,10 +49,13 @@ class Networking: NSObject {
         
     }
     
+    /**
+     Parses the response and saves data into the CoreData
+     - Parameter json: response object
+     */
     static func parseWordsAPIResponse(json: [String: AnyObject]) throws -> Word {
         
-        let wordMO = CoreData.createWordObj()
-        
+        // Minimal required data checks
         guard let results = json[Constants.Response.Keys.Results] as? [[String: AnyObject]] else {
             throw NetworkingErrors.ParsingJson(message: "Definition Missing")
         }
@@ -53,9 +64,17 @@ class Networking: NSObject {
         guard let word = json[Constants.Response.Keys.Word] as? String, word.characters.count > 0 else {
             throw NetworkingErrors.ParsingJson(message: "Error parsing '.word' key")
         }
+        
+        // Create Word Managed Object and start filling it out
+        let wordMO = CoreData.createWordObj()
+        
         wordMO.name = word
         
-        // Save syllabuls as well
+        let createdAt = NSDate()
+        wordMO.createdAt = createdAt
+        wordMO.updatedAt = createdAt
+        
+        // TODO: Save syllabuls as well
         
         // Frequency
         if let frequency = json[Constants.Response.Keys.Frequency] as? Double {
@@ -105,9 +124,8 @@ class Networking: NSObject {
             
         } // for in loop on the results
     
-        CoreData.moc.performAndWait {
-            CoreData.saveContext()
-        }
+        // Save data to CoreData
+        CoreData.saveContext()
         
         return wordMO
     }

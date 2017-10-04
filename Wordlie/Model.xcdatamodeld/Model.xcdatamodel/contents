@@ -13,21 +13,18 @@
         <attribute name="example" attributeType="String" syncable="YES"/>
         <relationship name="definition" maxCount="1" deletionRule="Nullify" destinationEntity="Definition" inverseName="examples" inverseEntity="Definition" syncable="YES"/>
     </entity>
-    <entity name="Vocabulary" representedClassName="Vocabulary" syncable="YES" codeGenerationType="class">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Word" inverseName="vocabularies" inverseEntity="Word" syncable="YES"/>
-    </entity>
     <entity name="Word" representedClassName="Word" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="frequency" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="pronounciation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="saved" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="definitions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Definition" inverseName="word" inverseEntity="Definition" syncable="YES"/>
-        <relationship name="vocabularies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Vocabulary" inverseName="words" inverseEntity="Vocabulary" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Vocabulary" positionX="-63" positionY="-18" width="128" height="75"/>
-        <element name="Word" positionX="-54" positionY="-9" width="128" height="120"/>
         <element name="Definition" positionX="-36" positionY="9" width="128" height="150"/>
         <element name="Example" positionX="-27" positionY="36" width="128" height="75"/>
+        <element name="Word" positionX="-54" positionY="-9" width="128" height="150"/>
     </elements>
 </model>

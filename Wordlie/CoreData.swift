@@ -63,10 +63,6 @@ class CoreData: NSObject {
         return NSEntityDescription.insertNewObject(forEntityName: Constants.CoreData.Entities.Word, into: moc) as! Word
     }
     
-    static func createVocabularyObj() -> Vocabulary {
-        return NSEntityDescription.insertNewObject(forEntityName: Constants.CoreData.Entities.Vocabulary, into: moc) as! Vocabulary
-    }
-    
     static func createDefinitionObj() -> Definition {
         return NSEntityDescription.insertNewObject(forEntityName: Constants.CoreData.Entities.Definition, into: moc) as! Definition
     }

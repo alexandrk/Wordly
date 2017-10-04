@@ -1,6 +1,8 @@
 //
-//  ViewController.swift
+//  WordViewController.swift
 //  Wordlie
+//
+//  View Controler for Word Search and Display
 //
 //  Created by Alexander on 9/11/17.
 //  Copyright © 2017 Dictality. All rights reserved.
@@ -8,8 +10,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class WordViewController: UIViewController {
 
+    // MARK: - Properties
+    
+    var wordMO: Word?
+    var hideSearch = false
+    
     // MARK: - UI Elements Definitions
     
     let backgroundImageView: UIImageView = {
@@ -23,12 +30,11 @@ class ViewController: UIViewController {
     
     let wordField: UITextField = {
         let field = UITextField()
-        field.placeholder = "Enter the word in question"
-        field.font = UIFont(name: "PingFangHK-Semibold", size: 20)
+        field.placeholder = Constants.App.WordFieldPlaceholderText
+        field.font = Constants.App.MediumFont
         field.textAlignment = .center
         field.clearButtonMode = .whileEditing
-        field.autocapitalizationType = .allCharacters
-        field.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
+        field.backgroundColor = Constants.App.TextFieldsBackgroundColor
         field.layer.cornerRadius = 10
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
@@ -36,10 +42,10 @@ class ViewController: UIViewController {
     
     let searchButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Lookup", for: .normal)
-        button.titleLabel?.font = UIFont(name: "PingFangHK-Semibold", size: 20)
+        button.setTitle(Constants.App.SearchButtonTitle, for: .normal)
+        button.titleLabel?.font = Constants.App.LargeFont
         button.layer.cornerRadius = 10
-        button.backgroundColor = UIColor(red: 33/255, green: 145/255, blue: 33/255, alpha: 0.6)
+        button.backgroundColor = Constants.App.ButtonsBackgroundColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(searchButtonClick), for: .touchUpInside)
         return button
@@ -47,7 +53,7 @@ class ViewController: UIViewController {
     
     let infoLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "PingFangHK-Semibold", size: 16)
+        label.font = Constants.App.SmallFont
         label.numberOfLines = 3
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -66,23 +72,12 @@ class ViewController: UIViewController {
         let view = UITextView()
         view.layer.cornerRadius = 10
         view.isEditable = false
-        view.font = UIFont(name: "PingFangHK-Regular", size: 18)
-        view.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
+        view.font = Constants.App.SmallFont
+        view.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10)
+        view.backgroundColor = Constants.App.TextFieldsBackgroundColor
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    }()
-    
-    let saveButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Save", for: .normal)
-        button.titleLabel?.font = UIFont(name: "PingFangHK-Semibold", size: 20)
-        button.layer.cornerRadius = 10
-        button.backgroundColor = UIColor(red: 33/255, green: 145/255, blue: 33/255, alpha: 0.6)
-        button.isHidden = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
-        return button
     }()
     
     // MARK: - Animated Field Constraints
@@ -104,18 +99,40 @@ class ViewController: UIViewController {
         // Set textfield delegate
         wordField.delegate = self
         
+        // Adding all the UI elements to the view
         view.addSubview(backgroundImageView)
         backgroundImageView.addSubview(wordField)
         backgroundImageView.addSubview(searchButton)
         backgroundImageView.addSubview(infoLabel)
         backgroundImageView.addSubview(activityIndicator)
         backgroundImageView.addSubview(textView)
-        backgroundImageView.addSubview(saveButton)
         
         setupLayout()
         
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String
-        print(paths)
+//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String
+//        print(paths)
+    }
+    
+    /**
+     Used when controller is loaded from the WordsTableView
+     */
+    override func viewWillAppear(_ animated: Bool) {
+        if wordMO != nil && hideSearch == true {
+            
+            navigationItem.title = wordMO?.name?.capitalized
+            
+            // Hide word search elements
+            wordField.isHidden = true
+            searchButton.isHidden = true
+            
+            wordField.alpha = 0
+            
+            wordFieldYConstraint?.isActive = false
+            wordFieldYConstraint = wordField.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.App.Spacing.Small)
+            wordFieldYConstraint?.isActive = true
+            
+            prepareToDisplay(wordMO!)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool){
@@ -123,13 +140,16 @@ class ViewController: UIViewController {
         
         // Unsubscribe from keyboard events
         unsubscribeFromKeyboardNotifications()
+        
+        // Makes sure hideSearch is set to default
+        hideSearch = false
     }
     
     // MARK: - Button Click Event Handlers
     
-    func searchButtonClick() {
-        var wordMO: Word?
+    public func searchButtonClick() {
         
+        // dispatches Notification to Hide keyboard
         if wordField.isFirstResponder {
             wordField.resignFirstResponder()
         }
@@ -144,64 +164,61 @@ class ViewController: UIViewController {
         // Clear out the info label
         infoLabel.text = ""
         
-        // Check if the word is already in the Database (previously searched)
+        // If the word is already in the Database (previously searched), return it
         if let wordExists = CoreData.checkIfWordExists(word: word), wordExists.count > 0{
             animateConstraints()
             prepareToDisplay(wordExists.first!)
         }
         else {
-            
             // Lookup the word definition from the API
             Networking.sendWordDefinitionAPIRequest(word: word){results in
+                
+                // Stop the activity indicator
                 self.activityIndicator.stopAnimating()
                 
+                // Check results of the response of an API call
                 switch results {
-                    case let .failure(error):
-                        self.infoLabel.text = "No results found.\nPlease try another word."
-                        print(error)
+                    case .failure:
+                        self.infoLabel.text = ß.App.NoWordFoundErrorMessage
                     
                     case let .success(resultsJson):
                         do {
-                            wordMO = try Networking.parseWordsAPIResponse(json: resultsJson)
+                            // Parse the response
+                            self.wordMO = try Networking.parseWordsAPIResponse(json: resultsJson)
                         }
                         catch {
-                            self.infoLabel.text = "No results found.\nPlease try another word."
+                            self.infoLabel.text = Constants.App.ParsingJsonErrorMessage
                             return
                         }
-                        self.prepareToDisplay(wordMO!)
+                        self.prepareToDisplay(self.wordMO!)
                 }
             }
+            
+            // Done after an API call is dispatched
             self.textView.text = ""
             self.textView.isHidden = true
-            self.saveButton.isHidden = true
             animateConstraints()
             activityIndicator.startAnimating()
         }
     }
     
-    func saveButtonClick() {
-        print("Save button clicked")
-        // Add word to Vocabulary
-    }
-    
     
     // MARK: - Helper Functions
-    func prepareToDisplay(_ wordMO: Word) {
+    private func prepareToDisplay(_ wordMO: Word) {
         self.textView.isHidden = false
-        self.saveButton.isHidden = false
-        
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-        }
-        
         displayWordInfo(wordMO)
     }
     
-    fileprivate func displayWordInfo(_ word: Word) {
-        let highlight = [NSFontAttributeName: Constants.App.LargeFont]
+    /**
+     Formats the Core Data Word Managed Object data, before displaying it in the textView
+     - Parameter word: Word Managed Object
+     */
+    private func displayWordInfo(_ word: Word) {
+        let highlight = [NSFontAttributeName: Constants.App.SmallBoldFont]
         let regular = [NSFontAttributeName: Constants.App.SmallFont]
         let finalOutput = NSMutableAttributedString()
         
+        // Word Frequency
         if word.frequency > 0 {
             let highlightedAS = NSAttributedString(string: "Usage Frequency: ", attributes: highlight)
             let regularAS = NSAttributedString(string: "\(word.frequency) out of 7", attributes: regular)
@@ -209,6 +226,7 @@ class ViewController: UIViewController {
             finalOutput.append(regularAS)
         }
         
+        // Word Pronunciation
         if let pronunciation = word.pronounciation, pronunciation.characters.count > 0 {
             let highlightedAS = NSAttributedString(string: "\n\nPronunciation: ", attributes: highlight)
             let regularAS = NSAttributedString(string: "[\(pronunciation)]", attributes: regular)
@@ -216,6 +234,7 @@ class ViewController: UIViewController {
             finalOutput.append(regularAS)
         }
         
+        // Word Definitions
         if let definitions = word.definitions?.allObjects as? [Definition] {
             for (index, result) in definitions.enumerated() {
                 
@@ -226,6 +245,7 @@ class ViewController: UIViewController {
                     finalOutput.append(regularAS)
                 }
                 
+                // Examples of definition usage
                 if let examples = result.examples?.allObjects as? [Example], examples.count > 0 {
                     var allExamples = String()
                     for example in examples {
@@ -239,6 +259,7 @@ class ViewController: UIViewController {
                     finalOutput.append(regularAS)
                 }
                 
+                // Words 'Part Of Speech' under current definition
                 if let type = result.partOfSpeech {
                     let highlightedAS = NSAttributedString(string: "\nPart of Speech (Type): ", attributes: highlight)
                     let regularAS = NSAttributedString(string: "\(type)", attributes: regular)
@@ -246,6 +267,7 @@ class ViewController: UIViewController {
                     finalOutput.append(regularAS)
                 }
                 
+                // Words Synonyms
                 if let synonyms = result.synonyms as [String]? {
                     var allSynonyms = String()
                     for synonym in synonyms {
@@ -261,17 +283,21 @@ class ViewController: UIViewController {
         self.textView.attributedText = finalOutput
     }
     
+    /**
+     Animates UI elements constrans, when the initial word search is performed
+     */
     func animateConstraints() {
         
         if constraintsAnimationHappened {
             return
         }
+        
         // Text Field
         wordFieldWidthConstraint?.isActive = false
         wordFieldWidthConstraint = wordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 16/25)
         wordFieldWidthConstraint?.isActive = true
         wordFieldYConstraint?.isActive = false
-        wordFieldYConstraint = wordField.topAnchor.constraint(equalTo: view.topAnchor, constant: 50)
+        wordFieldYConstraint = wordField.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.App.Spacing.Large + 10)
         wordFieldYConstraint?.isActive = true
         
         // Search Button
@@ -287,6 +313,7 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Lauout
+    
     func setupLayout() {
         
         // Background Image View
@@ -324,15 +351,17 @@ class ViewController: UIViewController {
         
         // Results Text View
         textView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textView.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: Constants.App.Spacing.Medium).isActive = true
-        textView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -Constants.App.Spacing.Medium).isActive = true
-        textView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -Constants.App.Spacing.Medium).isActive = true
+        let topConstraint = textView.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: Constants.App.Spacing.Small)
+        topConstraint.priority = 1000
+        topConstraint.isActive = true
         
-        // Save Button
-        saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.App.Spacing.Small).isActive = true
-        saveButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/3).isActive = true
-        saveButton.heightAnchor.constraint(equalTo: wordField.heightAnchor).isActive = true
-        saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.App.Spacing.Medium).isActive = true
+        let topConstraintToView = textView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.App.Spacing.Large)
+        topConstraintToView.priority = 999
+        topConstraintToView.isActive = true
+    
+        textView.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: Constants.App.Spacing.Small).isActive = true
+        textView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -Constants.App.Spacing.Medium).isActive = true
+        textView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.App.Spacing.Large).isActive = true
         
     }
     

@@ -2,13 +2,17 @@
 //  ViewControllerExtension.swift
 //  Wordlie
 //
+//  Used to control keyboard notifications and screen touches:
+//      - to hide keyboard
+//      - and adjust screen, if keyboard hides UI elements
+//
 //  Created by Alexander on 10/2/17.
 //  Copyright © 2017 Dictality. All rights reserved.
 //
 
 import UIKit
 
-extension ViewController : UITextFieldDelegate {
+extension WordViewController : UITextFieldDelegate {
     
     func subscribeToKeyboardNotifications(){
         NotificationCenter.default.addObserver(self, selector:
