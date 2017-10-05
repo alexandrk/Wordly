@@ -179,7 +179,7 @@ class WordViewController: UIViewController {
                 // Check results of the response of an API call
                 switch results {
                     case .failure:
-                        self.infoLabel.text = ß.App.NoWordFoundErrorMessage
+                        self.infoLabel.text = Constants.App.NoWordFoundErrorMessage
                     
                     case let .success(resultsJson):
                         do {
