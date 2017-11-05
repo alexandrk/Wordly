@@ -17,7 +17,8 @@ enum WordAPIResult {
 }
 
 enum NetworkingErrors: Error {
-    case ParsingJson(message: String)
+  case ParsingJsonDefinitionMissing
+  case ParsingJsonWordKeyMissing
 }
 
 class Networking: NSObject {
@@ -57,12 +58,12 @@ class Networking: NSObject {
         
         // Minimal required data checks
         guard let results = json[Constants.Response.Keys.Results] as? [[String: AnyObject]] else {
-            throw NetworkingErrors.ParsingJson(message: "Definition Missing")
+            throw NetworkingErrors.ParsingJsonDefinitionMissing
         }
         
         // Get the value from results
         guard let word = json[Constants.Response.Keys.Word] as? String, word.characters.count > 0 else {
-            throw NetworkingErrors.ParsingJson(message: "Error parsing '.word' key")
+            throw NetworkingErrors.ParsingJsonWordKeyMissing
         }
         
         // Create Word Managed Object and start filling it out

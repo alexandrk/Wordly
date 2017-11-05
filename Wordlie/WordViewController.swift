@@ -179,7 +179,7 @@ class WordViewController: UIViewController {
                 // Check results of the response of an API call
                 switch results {
                     case .failure:
-                        self.infoLabel.text = Constants.App.NoWordFoundErrorMessage
+                        self.infoLabel.text = Constants.App.NetworkErrorErrorMessage
                     
                     case let .success(resultsJson):
                         do {
@@ -187,7 +187,14 @@ class WordViewController: UIViewController {
                             self.wordMO = try Networking.parseWordsAPIResponse(json: resultsJson)
                         }
                         catch {
-                            self.infoLabel.text = Constants.App.ParsingJsonErrorMessage
+                            var labelText = String()
+                            switch error as! NetworkingErrors {
+                            case .ParsingJsonDefinitionMissing:
+                              labelText = Constants.App.NoWordFoundErrorMessage
+                            case .ParsingJsonWordKeyMissing:
+                              labelText = Constants.App.ParsingJsonErrorMessage
+                            }
+                            self.infoLabel.text = labelText
                             return
                         }
                         self.prepareToDisplay(self.wordMO!)

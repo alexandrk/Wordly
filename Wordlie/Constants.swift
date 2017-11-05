@@ -23,7 +23,8 @@ struct Constants {
         
         static let WordsControllerNavigationItemTitle = "All Words"
         static let WordsControllerTabBarItemTitle = "Words"
-        
+      
+        static let NetworkErrorErrorMessage = "Unable to contact the server.\nPlease check the internet connection and try again."
         static let EmptyWordFieldErrorMessage = "Please enter a word you want the definion for into the text field above."
         static let NoWordFoundErrorMessage = "No results found.\nPlease try another word."
         static let ParsingJsonErrorMessage = "Error parsing the response.\nPlease contact the developer.\nSorry for the inconvenience."
