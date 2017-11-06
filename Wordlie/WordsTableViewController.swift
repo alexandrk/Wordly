@@ -120,5 +120,17 @@ class WordsTableViewController: UITableViewController, NSFetchedResultsControlle
         viewCotroller.hideSearch = true
         navigationController?.pushViewController(viewCotroller, animated: true)
     }
+  
+  override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+      return true
+  }
+  
+  override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+      if editingStyle == .delete {
+          let word = fetchedResultsController.object(at: indexPath) as Word
+          CoreData.moc.delete(word)
+          CoreData.saveContext()
+      }
+  }
     
 }
