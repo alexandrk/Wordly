@@ -13,7 +13,7 @@ class WordsTableViewController: UITableViewController, NSFetchedResultsControlle
 
     // MARK: - Properties
     
-    // Fetched Results Controller
+  @objc // Fetched Results Controller
     lazy var fetchedResultsController: NSFetchedResultsController<Word> = {
         let wordFetchRequest = NSFetchRequest<Word>(entityName: "Word")
         let primarySortDescriptor = NSSortDescriptor(key: #keyPath(Word.updatedAt), ascending: false)

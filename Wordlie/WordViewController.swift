@@ -148,7 +148,7 @@ class WordViewController: UIViewController {
     
     // MARK: - Button Click Event Handlers
     
-    public func searchButtonClick() {
+    @objc public func searchButtonClick() {
         
         // dispatches Notification to Hide keyboard
         if wordField.isFirstResponder {
@@ -156,7 +156,7 @@ class WordViewController: UIViewController {
         }
         
         // Return if the wordField is empty
-        guard let word = wordField.text?.trimmingCharacters(in: .whitespacesAndNewlines), word.characters.count > 0 else {
+        guard let word = wordField.text?.trimmingCharacters(in: .whitespacesAndNewlines), word.count > 0 else {
             infoLabel.text = Constants.App.EmptyWordFieldErrorMessage
             return
         }
@@ -222,8 +222,8 @@ class WordViewController: UIViewController {
      - Parameter word: Word Managed Object
      */
     private func displayWordInfo(_ word: Word) {
-        let highlight = [NSFontAttributeName: Constants.App.SmallBoldFont]
-        let regular = [NSFontAttributeName: Constants.App.SmallFont]
+        let highlight = [NSAttributedStringKey.font: Constants.App.SmallBoldFont]
+        let regular = [NSAttributedStringKey.font: Constants.App.SmallFont]
         let finalOutput = NSMutableAttributedString()
         
         // Word Frequency
@@ -235,7 +235,7 @@ class WordViewController: UIViewController {
         }
         
         // Word Pronunciation
-        if let pronunciation = word.pronounciation, pronunciation.characters.count > 0 {
+        if let pronunciation = word.pronounciation, pronunciation.count > 0 {
             let highlightedAS = NSAttributedString(string: "\n\nPronunciation: ", attributes: highlight)
             let regularAS = NSAttributedString(string: "[\(pronunciation)]", attributes: regular)
             finalOutput.append(highlightedAS)
@@ -360,11 +360,11 @@ class WordViewController: UIViewController {
         // Results Text View
         textView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         let topConstraint = textView.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: Constants.App.Spacing.Small)
-        topConstraint.priority = 1000
+        topConstraint.priority = UILayoutPriority(rawValue: 1000)
         topConstraint.isActive = true
         
         let topConstraintToView = textView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.App.Spacing.Large)
-        topConstraintToView.priority = 999
+        topConstraintToView.priority = UILayoutPriority(rawValue: 999)
         topConstraintToView.isActive = true
     
         textView.topAnchor.constraint(equalTo: wordField.bottomAnchor, constant: Constants.App.Spacing.Small).isActive = true

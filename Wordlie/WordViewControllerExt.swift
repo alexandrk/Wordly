@@ -38,7 +38,7 @@ extension WordViewController : UITextFieldDelegate {
         return true
     }
     
-    func keyboardWillShow(notification: NSNotification){
+    @objc func keyboardWillShow(notification: NSNotification){
         
         if let userInfo = notification.userInfo {
             if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect {
@@ -84,7 +84,7 @@ extension WordViewController : UITextFieldDelegate {
         
     }
     
-    func keyboardWillHide(notification: NSNotification){
+    @objc func keyboardWillHide(notification: NSNotification){
         view.frame.origin.y = 0
     }
     

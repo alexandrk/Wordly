@@ -14,7 +14,7 @@ extension Word {
     /**
      Transient property for grouping a table into sections based on **updateAt** date
      */
-    public var daySectionIdentifier: String? {
+    @objc public var daySectionIdentifier: String? {
         let currentCalendar = Calendar.current
         self.willAccessValue(forKey: "daySectionIdentifier")
         var sectionIdentifier = ""

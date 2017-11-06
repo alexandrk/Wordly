@@ -62,7 +62,7 @@ class Networking: NSObject {
         }
         
         // Get the value from results
-        guard let word = json[Constants.Response.Keys.Word] as? String, word.characters.count > 0 else {
+        guard let word = json[Constants.Response.Keys.Word] as? String, word.count > 0 else {
             throw NetworkingErrors.ParsingJsonWordKeyMissing
         }
         
@@ -85,7 +85,7 @@ class Networking: NSObject {
         // Pronounciation
         if  let prono = json[Constants.Response.Keys.PronunciationWrapper] as? [String: String],
             let pronounciation = prono[Constants.Response.Keys.PronunciationAll],
-            pronounciation.characters.count > 0
+            pronounciation.count > 0
         {
                 wordMO.pronounciation = pronounciation
         }
