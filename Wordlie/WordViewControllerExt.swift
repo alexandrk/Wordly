@@ -51,7 +51,7 @@ extension WordViewController : UITextFieldDelegate {
                 
                 // TextFieldBottom position on screen
                 var textFieldBottomY: CGFloat = 0
-                // Pick proper text field, depending on the ViewController state
+                // Pick a proper element, depending on the ViewController state
                 var textField: UITextField? = nil
                 if (wordField.isFirstResponder){
                     textField = wordField
@@ -69,15 +69,15 @@ extension WordViewController : UITextFieldDelegate {
                 let extraSpacing = Constants.App.Spacing.Medium
                 let element = searchButton
                 
-                otherHeightAdjustments += element.frame.height + extraSpacing
+                otherHeightAdjustments += element.frame.height + extraSpacing + Constants.App.Spacing.Small
                 
                 // Difference between textFieldBottom and Bottom of the Screen
                 let textFieldToBottom = screenHeight - textFieldBottomY
                 
                 // Shift screen up on the difference between keyboard height and textFieldToBottom
-                let shiftAmount = keyboardHeight - textFieldToBottom
+                let shiftAmount = keyboardHeight - textFieldToBottom + otherHeightAdjustments
                 if shiftAmount > 0 {
-                    view.frame.origin.y -= shiftAmount + 10 + otherHeightAdjustments
+                    view.frame.origin.y -= shiftAmount
                 }
             }
         }
