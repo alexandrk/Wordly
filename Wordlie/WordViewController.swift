@@ -35,6 +35,7 @@ class WordViewController: UIViewController {
         field.textAlignment = .center
         field.clearButtonMode = .whileEditing
         field.backgroundColor = Constants.App.TextFieldsBackgroundColor
+        field.returnKeyType = .search
         field.layer.cornerRadius = 10
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
