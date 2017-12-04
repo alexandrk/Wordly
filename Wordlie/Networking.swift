@@ -71,7 +71,7 @@ class Networking: NSObject {
         
         wordMO.name = word
         
-        let createdAt = NSDate()
+        let createdAt = Date()
         wordMO.createdAt = createdAt
         wordMO.updatedAt = createdAt
         

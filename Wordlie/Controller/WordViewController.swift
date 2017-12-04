@@ -172,35 +172,7 @@ class WordViewController: UIViewController {
         }
         else {
             // Lookup the word definition from the API
-            Networking.sendWordDefinitionAPIRequest(word: word){results in
-                
-                // Stop the activity indicator
-                self.activityIndicator.stopAnimating()
-                
-                // Check results of the response of an API call
-                switch results {
-                    case .failure:
-                        self.infoLabel.text = Constants.App.NetworkErrorErrorMessage
-                    
-                    case let .success(resultsJson):
-                        do {
-                            // Parse the response
-                            self.wordMO = try Networking.parseWordsAPIResponse(json: resultsJson)
-                        }
-                        catch {
-                            var labelText = String()
-                            switch error as! NetworkingErrors {
-                            case .ParsingJsonDefinitionMissing:
-                              labelText = Constants.App.NoWordFoundErrorMessage
-                            case .ParsingJsonWordKeyMissing:
-                              labelText = Constants.App.ParsingJsonErrorMessage
-                            }
-                            self.infoLabel.text = labelText
-                            return
-                        }
-                        self.prepareToDisplay(self.wordMO!)
-                }
-            }
+            Networking.sendWordDefinitionAPIRequest(word: word, completion: handleWordLookupResponse)
             
             // Done after an API call is dispatched
             self.textView.text = ""
@@ -209,9 +181,41 @@ class WordViewController: UIViewController {
             activityIndicator.startAnimating()
         }
     }
-    
+  
+    /**
+      Completion Handler for Word Lookup API Request
+    */
+    private func handleWordLookupResponse(results: WordAPIResult) {
+      // Stop the activity indicator
+      self.activityIndicator.stopAnimating()
+      
+      // Check results of the response of an API call
+      switch results {
+      case .failure:
+        self.infoLabel.text = Constants.App.NetworkErrorErrorMessage
+        
+      case let .success(resultsJson):
+        do {
+          // Parse the response
+          self.wordMO = try Networking.parseWordsAPIResponse(json: resultsJson)
+        }
+        catch {
+          var labelText = String()
+          switch error as! NetworkingErrors {
+          case .ParsingJsonDefinitionMissing:
+            labelText = Constants.App.NoWordFoundErrorMessage
+          case .ParsingJsonWordKeyMissing:
+            labelText = Constants.App.ParsingJsonErrorMessage
+          }
+          self.infoLabel.text = labelText
+          return
+        }
+        self.prepareToDisplay(self.wordMO!)
+      }
+    }
     
     // MARK: - Helper Functions
+  
     private func prepareToDisplay(_ wordMO: Word) {
         self.textView.isHidden = false
         displayWordInfo(wordMO)
@@ -220,7 +224,7 @@ class WordViewController: UIViewController {
     /**
      Formats the Core Data Word Managed Object data, before displaying it in the textView
      - Parameter word: Word Managed Object
-     */
+    */
     private func displayWordInfo(_ word: Word) {
         let highlight = [NSAttributedStringKey.font: Constants.App.SmallBoldFont]
         let regular = [NSAttributedStringKey.font: Constants.App.SmallFont]

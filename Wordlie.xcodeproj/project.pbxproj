@@ -12,13 +12,13 @@
 		112DEADE1F6736AD0080CC29 /* Main - Used for Reference Only.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 112DEADC1F6736AD0080CC29 /* Main - Used for Reference Only.storyboard */; };
 		112DEAE01F6736AD0080CC29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 112DEADF1F6736AD0080CC29 /* Assets.xcassets */; };
 		112DEAE31F6736AD0080CC29 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 112DEAE11F6736AD0080CC29 /* LaunchScreen.storyboard */; };
+		116B28C71FFEDB8F0021DAB9 /* OutOfSourceControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116B28C61FFEDB8F0021DAB9 /* OutOfSourceControl.swift */; };
 		1170860F1F844F2000FFEEB4 /* WordEntityExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170860E1F844F2000FFEEB4 /* WordEntityExtension.swift */; };
 		11E39E391F8086750001E3D2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E381F8086750001E3D2 /* Constants.swift */; };
-		11E39E3B1F8086DC0001E3D2 /* OutOfSourceControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E3A1F8086DC0001E3D2 /* OutOfSourceControl.swift */; };
 		11E39E3E1F8175930001E3D2 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E3C1F8175930001E3D2 /* Model.xcdatamodeld */; };
 		11E39E401F8195C80001E3D2 /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E3F1F8195C80001E3D2 /* CoreData.swift */; };
 		11E39E421F81BEE10001E3D2 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E411F81BEE10001E3D2 /* Networking.swift */; };
-		11E39E441F82D32F0001E3D2 /* WordViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E431F82D32F0001E3D2 /* WordViewControllerExt.swift */; };
+		11E39E441F82D32F0001E3D2 /* WordViewCtrlKeyboardHandlerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E431F82D32F0001E3D2 /* WordViewCtrlKeyboardHandlerExt.swift */; };
 		11E39E461F82EEBE0001E3D2 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E451F82EEBE0001E3D2 /* CustomTabBarController.swift */; };
 		11E39E481F82F8ED0001E3D2 /* WordsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E471F82F8ED0001E3D2 /* WordsTableViewController.swift */; };
 		11E39E4A1F8355330001E3D2 /* WordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E39E491F8355330001E3D2 /* WordTableViewCell.swift */; };
@@ -33,13 +33,13 @@
 		112DEADF1F6736AD0080CC29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		112DEAE21F6736AD0080CC29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		112DEAE41F6736AD0080CC29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		116B28C61FFEDB8F0021DAB9 /* OutOfSourceControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutOfSourceControl.swift; sourceTree = "<group>"; };
 		1170860E1F844F2000FFEEB4 /* WordEntityExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordEntityExtension.swift; sourceTree = "<group>"; };
 		11E39E381F8086750001E3D2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		11E39E3A1F8086DC0001E3D2 /* OutOfSourceControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfSourceControl.swift; sourceTree = "<group>"; };
 		11E39E3D1F8175930001E3D2 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		11E39E3F1F8195C80001E3D2 /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
 		11E39E411F81BEE10001E3D2 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
-		11E39E431F82D32F0001E3D2 /* WordViewControllerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordViewControllerExt.swift; sourceTree = "<group>"; };
+		11E39E431F82D32F0001E3D2 /* WordViewCtrlKeyboardHandlerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordViewCtrlKeyboardHandlerExt.swift; sourceTree = "<group>"; };
 		11E39E451F82EEBE0001E3D2 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		11E39E471F82F8ED0001E3D2 /* WordsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsTableViewController.swift; sourceTree = "<group>"; };
 		11E39E491F8355330001E3D2 /* WordTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordTableViewCell.swift; sourceTree = "<group>"; };
@@ -82,23 +82,47 @@
 			isa = PBXGroup;
 			children = (
 				112DEAD81F6736AD0080CC29 /* AppDelegate.swift */,
-				11E39E3C1F8175930001E3D2 /* Model.xcdatamodeld */,
-				1170860E1F844F2000FFEEB4 /* WordEntityExtension.swift */,
-				11E39E381F8086750001E3D2 /* Constants.swift */,
-				11E39E451F82EEBE0001E3D2 /* CustomTabBarController.swift */,
-				112DEADA1F6736AD0080CC29 /* WordViewController.swift */,
-				11E39E431F82D32F0001E3D2 /* WordViewControllerExt.swift */,
-				11E39E471F82F8ED0001E3D2 /* WordsTableViewController.swift */,
-				11E39E491F8355330001E3D2 /* WordTableViewCell.swift */,
-				11E39E3F1F8195C80001E3D2 /* CoreData.swift */,
-				11E39E411F81BEE10001E3D2 /* Networking.swift */,
-				11E39E3A1F8086DC0001E3D2 /* OutOfSourceControl.swift */,
-				112DEADC1F6736AD0080CC29 /* Main - Used for Reference Only.storyboard */,
+				116B28C81FFEDC250021DAB9 /* Model */,
+				116B28CB1FFEE96D0021DAB9 /* View */,
+				116B28CA1FFEDD200021DAB9 /* Controller */,
 				112DEADF1F6736AD0080CC29 /* Assets.xcassets */,
+				11E39E381F8086750001E3D2 /* Constants.swift */,
+				11E39E411F81BEE10001E3D2 /* Networking.swift */,
 				112DEAE11F6736AD0080CC29 /* LaunchScreen.storyboard */,
+				116B28C61FFEDB8F0021DAB9 /* OutOfSourceControl.swift */,
+				112DEADC1F6736AD0080CC29 /* Main - Used for Reference Only.storyboard */,
 				112DEAE41F6736AD0080CC29 /* Info.plist */,
 			);
 			path = Wordlie;
+			sourceTree = "<group>";
+		};
+		116B28C81FFEDC250021DAB9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				11E39E3C1F8175930001E3D2 /* Model.xcdatamodeld */,
+				1170860E1F844F2000FFEEB4 /* WordEntityExtension.swift */,
+				11E39E3F1F8195C80001E3D2 /* CoreData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		116B28CA1FFEDD200021DAB9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				112DEADA1F6736AD0080CC29 /* WordViewController.swift */,
+				11E39E431F82D32F0001E3D2 /* WordViewCtrlKeyboardHandlerExt.swift */,
+				11E39E471F82F8ED0001E3D2 /* WordsTableViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		116B28CB1FFEE96D0021DAB9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				11E39E451F82EEBE0001E3D2 /* CustomTabBarController.swift */,
+				11E39E491F8355330001E3D2 /* WordTableViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		369EBAFFB35D01EDD42F17C5 /* Frameworks */ = {
@@ -251,12 +275,12 @@
 			files = (
 				112DEADB1F6736AD0080CC29 /* WordViewController.swift in Sources */,
 				11E39E481F82F8ED0001E3D2 /* WordsTableViewController.swift in Sources */,
+				116B28C71FFEDB8F0021DAB9 /* OutOfSourceControl.swift in Sources */,
 				1170860F1F844F2000FFEEB4 /* WordEntityExtension.swift in Sources */,
 				11E39E4A1F8355330001E3D2 /* WordTableViewCell.swift in Sources */,
 				112DEAD91F6736AD0080CC29 /* AppDelegate.swift in Sources */,
 				11E39E3E1F8175930001E3D2 /* Model.xcdatamodeld in Sources */,
-				11E39E3B1F8086DC0001E3D2 /* OutOfSourceControl.swift in Sources */,
-				11E39E441F82D32F0001E3D2 /* WordViewControllerExt.swift in Sources */,
+				11E39E441F82D32F0001E3D2 /* WordViewCtrlKeyboardHandlerExt.swift in Sources */,
 				11E39E401F8195C80001E3D2 /* CoreData.swift in Sources */,
 				11E39E391F8086750001E3D2 /* Constants.swift in Sources */,
 				11E39E421F81BEE10001E3D2 /* Networking.swift in Sources */,
